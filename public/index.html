@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en" data-theme="auto">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="office-token" content="__OFFICE_TOKEN__" />
+  <title>Head Office</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 4C9 4 6 13 6 20c0 5 4 8 10 8s10-3 10-8c0-7-3-16-10-16z' fill='%23D97757'/%3E%3Ccircle cx='12.5' cy='18' r='1.8' fill='%23141218'/%3E%3Ccircle cx='19.5' cy='18' r='1.8' fill='%23141218'/%3E%3C/svg%3E" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Staatliches&display=swap" rel="stylesheet" />
+  <link rel="preload" href="/fonts/Kripa-VariableFont_wght.ttf" as="font" type="font/ttf" crossorigin />
+  <link rel="stylesheet" href="/styles.css" />
+  <script>try { const d = document.documentElement.dataset; d.theme = localStorage.getItem('office-theme') || 'auto'; d.left = localStorage.getItem('office-left') || 'on'; d.right = localStorage.getItem('office-right') || 'on'; } catch {}</script>
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.170.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.170.0/examples/jsm/"
+      }
+    }
+  </script>
+</head>
+<body>
+  <div class="app">
+    <nav class="dock" id="dock" aria-label="Agents in the office">
+      <button class="side-toggle" id="left-toggle" data-side="left" aria-controls="dock" aria-expanded="true" title="Hide team ( [ )">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.75" y="3.75" width="14.5" height="12.5" rx="3" /><path class="strip" d="M7.5 4v12" /><path class="fill" d="M5 6.5v7" /></svg>
+      </button>
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true"><i></i><i></i><i></i></span>
+        <span>Head Office</span>
+      </div>
+      <div class="dock-head"><h2>Team</h2><span class="muted" id="dock-count"></span></div>
+      <div class="team" id="team"></div>
+    </nav>
+
+    <main class="stage">
+      <header class="topbar">
+        <div class="chips" id="chips"></div>
+        <div class="tools">
+          <button class="tool" id="shop-open" aria-controls="shop" aria-expanded="false" title="Furniture shop">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 4h14l2 5H3z" /><path d="M3 9a3 3 0 0 0 6 0 3 3 0 0 0 6 0 3 3 0 0 0 6 0" /><path d="M5 11.5V20h14v-8.5" /><path d="M10 20v-5h4v5" /></svg>
+            <span>Shop</span>
+          </button>
+          <button class="tool icon" id="settings-open" aria-haspopup="dialog" title="Settings" aria-label="Settings">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
+          </button>
+        </div>
+      </header>
+
+      <div id="scene" class="scene" aria-label="3D office view"></div>
+
+      <section class="shop" id="shop" hidden aria-labelledby="shop-title">
+        <div class="shop-head">
+          <div><h2 id="shop-title">Shop</h2><span id="shop-sub"></span></div>
+          <button class="close" data-shop-close title="Close (Esc)" aria-label="Close the shop"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9" /></svg></button>
+        </div>
+        <div class="shop-tabs" id="shop-tabs" role="tablist" aria-label="Categories"></div>
+        <div class="shop-grid" id="shop-grid"></div>
+      </section>
+
+      <footer class="bottombar">
+        <div class="legend" id="legend"></div>
+      </footer>
+    </main>
+
+    <aside class="panel" id="panel" aria-label="Activity and agent details">
+      <button class="side-toggle" id="right-toggle" data-side="right" aria-controls="panel" aria-expanded="true" title="Hide activity ( ] )">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2.75" y="3.75" width="14.5" height="12.5" rx="3" /><path class="strip" d="M12.5 4v12" /><path class="fill" d="M15 6.5v7" /></svg>
+      </button>
+      <div class="panel-head">
+        <h2 id="panel-title">Activity</h2>
+        <span class="conn" id="conn"><i></i><span>Connecting</span></span>
+      </div>
+      <div class="panel-body">
+        <section class="detail" id="detail" hidden></section>
+        <section class="activity" id="activity">
+          <div class="panel-head small"><span class="muted">Newest first</span></div>
+          <ol class="feed" id="feed"></ol>
+        </section>
+      </div>
+    </aside>
+  </div>
+
+  <dialog class="settings" id="settings" aria-labelledby="settings-title">
+    <div class="settings-head">
+      <h2 id="settings-title">Settings</h2>
+      <button class="close" data-close title="Close (Esc)" aria-label="Close settings">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5.5 5.5l9 9M14.5 5.5l-9 9" /></svg>
+      </button>
+    </div>
+    <div class="setting">
+      <div><b>Office lighting</b><span>Time of day inside the office. Auto follows your clock.</span></div>
+      <div class="seg" id="tod" role="group" aria-label="Lighting">
+        <button data-tod="auto" class="on">Auto</button>
+        <button data-tod="day">Day</button>
+        <button data-tod="evening">Evening</button>
+        <button data-tod="night">Night</button>
+      </div>
+    </div>
+    <div class="setting">
+      <div><b>Appearance</b><span>Light or dark around the office. Auto follows your system.</span></div>
+      <div class="seg" id="theme" role="group" aria-label="Appearance">
+        <button data-theme="light" title="Light mode">☀︎ Light</button>
+        <button data-theme="dark" title="Dark mode">☾ Dark</button>
+        <button data-theme="auto" title="Follow your system">Auto</button>
+      </div>
+    </div>
+    <div class="setting">
+      <div><b>Alerts</b><span>A chime, plus a notification when the tab is hidden, whenever an agent needs you.</span></div>
+      <button class="switch" id="alerts" role="switch" aria-checked="false" aria-label="Alerts"><i></i></button>
+    </div>
+    <div class="setting">
+      <div><b>Your office</b><span id="office-desc"></span></div>
+      <div class="seg"><button id="redesign">Start over…</button></div>
+    </div>
+    <div class="setting">
+      <div><b>Tidy up</b><span>Put every chair you've carried off back in its place and switch all the lamps back on.</span></div>
+      <div class="seg"><button id="tidy">Tidy up</button></div>
+    </div>
+  </dialog>
+  <dialog class="welcome" id="welcome" aria-label="Set up your office"></dialog>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+{
+  "name": "head-office",
+  "version": "0.1.0",
+  "private": true,
+  "description": "A live 3D office for your AI agents (Grok Bots, Claude Code, anything that can POST JSON).",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "start": "node server.mjs",
+    "demo": "node scripts/demo.mjs",
+    "install:claude": "node adapters/claude-code/install.mjs",
+    "uninstall:claude": "node adapters/claude-code/install.mjs --remove",
+    "install:codex": "node adapters/codex/install.mjs",
+    "uninstall:codex": "node adapters/codex/install.mjs --remove"
+  },
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Aaebraham/head-office.git"
+  }
+}
